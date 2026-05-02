@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AST - Alistair Signal Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#c9a84c;--gold-light:#f0d080;
+  --bg:#0a0a0a;--bg2:#0d0d0d;--bg3:#111111;--bg4:#161616;
+  --border:#1e1e1e;--border2:#2a2a2a;--text:#e8e8e8;
+  --muted:#666;--muted2:#444;--muted3:#333;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Raleway',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(10px);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;letter-spacing:8px;color:var(--gold);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{padding:8px 20px;border:1px solid var(--gold);color:var(--gold);font-size:9px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;font-family:'Raleway',sans-serif;}
+.nav-cta:hover{background:var(--gold);color:#000;}
+
+/* HERO - compact, no full-vh stretch */
+#hero{padding:120px 40px 0;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(201,168,76,0.05) 0%,transparent 55%),radial-gradient(ellipse at 75% 20%,rgba(201,168,76,0.03) 0%,transparent 50%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;opacity:0.25;}
+.hero-content{position:relative;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:72px;}
+.hero-left{display:flex;flex-direction:column;align-items:center;}
+.hero-tag{font-size:9px;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:block;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(56px,7vw,88px);font-weight:700;color:#fff;line-height:0.92;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
+.hero-title span{color:var(--gold);}
+.hero-sub{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:36px;line-height:1.8;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.btn-gold{padding:15px 40px;background:var(--gold);color:#000;font-size:9px;letter-spacing:4px;text-transform:uppercase;text-decoration:none;font-weight:700;font-family:'Raleway',sans-serif;transition:all 0.2s;border:none;cursor:pointer;display:inline-block;}
+.btn-gold:hover{background:var(--gold-light);}
+.btn-outline{padding:15px 40px;border:1px solid var(--border2);color:var(--muted);font-size:9px;letter-spacing:4px;text-transform:uppercase;text-decoration:none;font-family:'Raleway',sans-serif;transition:all 0.2s;cursor:pointer;background:none;display:inline-block;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+/* Hero right - stats card */
+.hero-right{}
+.hero-stats-card{border:1px solid var(--border);background:var(--bg2);overflow:hidden;}
+.hsc-top{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));}
+.hsc-inner{padding:32px;}
+.hsc-label{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;display:block;}
+.hsc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1px;}
+.hsc-cell{background:var(--bg2);padding:20px 20px;}
+.hsc-cell-lbl{font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.hsc-cell-val{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--gold);line-height:1;}
+.hsc-cell-val.white{color:#fff;}
+.hsc-cell-val.green{color:#4ade80;}
+.hsc-cell-val.sm{font-size:22px;}
+.hsc-foot{background:var(--bg4);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+.hsc-foot-handle{font-size:10px;letter-spacing:2px;color:var(--gold);}
+.hsc-foot-note{font-size:8px;letter-spacing:1px;color:var(--muted3);text-transform:uppercase;}
+
+/* Stats bar below hero */
+.stats-bar{border-top:1px solid var(--border);background:var(--bg2);}
+.stats-bar-inner{max-width:1200px;margin:0 auto;display:flex;}
+.sb-item{flex:1;padding:28px 32px;border-right:1px solid var(--border);text-align:center;}
+.sb-item:last-child{border-right:none;}
+.sb-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--gold);display:block;line-height:1;}
+.sb-lbl{font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:6px;display:block;}
+
+/* SECTION BASE */
+section{padding:110px 40px;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{font-size:9px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:block;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,68px);font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:2px;line-height:0.95;margin-bottom:16px;}
+.section-sub{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:64px;}
+.gold-bar{width:3px;height:48px;background:linear-gradient(180deg,var(--gold),var(--gold-light),var(--gold));margin-bottom:28px;}
+
+/* RESULTS */
+#results{background:var(--bg2);}
+.results-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,0.9fr);gap:24px;align-items:start;}
+.results-main{text-align:center;}
+.week-tabs{display:flex;gap:8px;margin-bottom:28px;justify-content:center;}
+.tab-btn{padding:8px 24px;background:var(--bg4);color:var(--muted);border:1px solid var(--border2);font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:'Raleway',sans-serif;transition:all 0.2s;}
+.tab-btn.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
+.results-card{display:none;background:var(--bg2);border:1px solid var(--border);overflow:hidden;}
+.results-card.active{display:block;}
+.gold-top{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));}
+.card-head{padding:28px 32px 24px;border-bottom:1px solid var(--border);text-align:center;}
+.head-row{display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+.ast-lbl{font-size:11px;letter-spacing:6px;color:var(--gold);font-weight:700;text-transform:uppercase;}
+.wk-badge{border:1px solid var(--border2);padding:5px 16px;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,46px);font-weight:700;color:#fff;text-transform:uppercase;line-height:1;margin-bottom:10px;text-align:center;}
+.card-date{font-size:9px;letter-spacing:3px;color:var(--muted2);text-transform:uppercase;text-align:center;}
+.stats-sec{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center;}
+.net-block{flex:1;text-align:center;}
+.net-lbl{font-size:8px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.net-num{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:700;color:var(--gold);line-height:1;}
+.net-unit{font-size:8px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.stat-boxes{display:flex;flex-direction:column;gap:5px;min-width:150px;width:100%;max-width:260px;margin:0 auto;}
+.stat-box{border:1px solid var(--border2);padding:7px 12px;display:flex;justify-content:space-between;align-items:center;}
+.sb-lbl2{font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.sb-val{font-size:13px;font-weight:700;}
+.v-w{color:#fff;}.v-g{color:#4ade80;}.v-r{color:#f87171;}.v-gold{color:var(--gold);}
+.breakdown{padding:20px 32px 24px;text-align:center;}
+.bd-lbl{font-size:8px;letter-spacing:4px;color:var(--muted2);text-transform:uppercase;margin-bottom:16px;text-align:center;}
+.tr-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);max-width:360px;margin:0 auto;}
+.tr-row:last-child{border-bottom:none;}
+.tr-left{display:flex;align-items:center;gap:10px;}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.dot.w{background:#4ade80;}.dot.l{background:#f87171;}
+.tr-name{font-size:12px;letter-spacing:1px;color:var(--text);}
+.tr-right{display:flex;align-items:center;gap:10px;}
+.tr-r{font-size:9px;letter-spacing:1px;padding:3px 8px;border:1px solid;font-weight:600;}
+.tr-r.pos{color:var(--gold);border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.06);}
+.tr-r.neg{color:#f87171;border-color:rgba(248,113,113,0.25);background:rgba(248,113,113,0.05);}
+.tr-pips{font-size:15px;font-weight:700;min-width:100px;text-align:right;}
+.tr-pips.pos{color:#4ade80;}.tr-pips.neg{color:#f87171;}
+.card-foot{padding:14px 32px;border-top:1px solid #1a1a1a;display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;text-align:center;}
+.cf-handle{font-size:11px;color:var(--gold);letter-spacing:2px;}
+.cf-disc{font-size:8px;color:var(--muted3);letter-spacing:1px;text-transform:uppercase;}
+.results-right{display:flex;flex-direction:column;gap:24px;align-self:start;}
+.cumulative-box{border:1px solid var(--border);background:var(--bg3);overflow:hidden;}
+.cum-top{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));}
+.cum-inner{padding:32px;text-align:center;}
+.cum-tag{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:block;}
+.cum-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:20px;}
+.cum-cell{background:var(--bg3);padding:20px;}
+.cum-cell-lbl{font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.cum-cell-val{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold);}
+.cum-cell-val.white{color:#fff;}.cum-cell-val.green{color:#4ade80;}
+.cum-note{font-size:9px;letter-spacing:2px;color:var(--muted3);text-transform:uppercase;text-align:center;}
+.summary-box{border:1px solid var(--border);background:var(--bg3);padding:32px;text-align:center;}
+.sum-tag{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:block;}
+.sum-week-lbl{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:16px;text-align:center;}
+.sum-text{font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:12px;font-weight:300;text-align:center;}
+.signal-shot{border:1px solid var(--border);background:var(--bg3);overflow:hidden;}
+.signal-shot img{display:block;width:100%;height:auto;}
+
+/* ABOUT */
+#start-here{background:var(--bg);}
+#about{background:var(--bg);}
+.about-grid{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:center;}
+.about-img-frame{border:1px solid var(--border2);padding:3px;position:relative;}
+.about-img-placeholder{width:100%;aspect-ratio:3/4;background:var(--bg4);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.about-monogram{font-family:'Cormorant Garamond',serif;font-size:100px;font-weight:700;color:var(--border2);}
+.about-photo{width:100%;height:100%;object-fit:cover;display:block;}
+
+.ast-logo-remix{
+  aspect-ratio:3/4;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(240,208,128,0.18) 0%,rgba(201,168,76,0.08) 28%,transparent 58%),
+    linear-gradient(135deg,#160808 0%,#0a0a0a 48%,#151515 100%);
+  border:1px solid rgba(201,168,76,0.16);
+  position:relative;
+}
+.ast-logo-remix::before{
+  content:'';
+  position:absolute;
+  inset:22px;
+  border:1px solid rgba(201,168,76,0.22);
+}
+.ast-logo-remix::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,transparent 0%,rgba(240,208,128,0.11) 50%,transparent 100%);
+  transform:translateX(-120%);
+  animation:astSweep 5s ease-in-out infinite;
+}
+.ast-mark{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(72px,10vw,126px);
+  font-weight:700;
+  letter-spacing:2px;
+  line-height:1;
+  background:linear-gradient(180deg,#fff0a8 0%,#f0d080 32%,#c9a84c 62%,#7d6320 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 32px rgba(201,168,76,0.18);
+}
+.ast-mark{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(72px,10vw,126px);
+  font-weight:700;
+  letter-spacing:4px;
+  line-height:1;
+  background:linear-gradient(180deg,#fff0a8 0%,#f0d080 32%,#c9a84c 62%,#7d6320 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 32px rgba(201,168,76,0.18);
+}
+.ast-ring{
+  position:absolute;
+  z-index:1;
+  width:62%;
+  aspect-ratio:1;
+  border:1px solid rgba(201,168,76,0.32);
+  border-radius:50%;
+  box-shadow:0 0 45px rgba(201,168,76,0.08);
+}
+.ast-cross{
+  position:absolute;
+  z-index:1;
+  width:58%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.55),transparent);
+}
+.ast-cross-one{transform:rotate(25deg);}
+.ast-cross-two{transform:rotate(-25deg);}
+.ast-logo-caption{
+  position:absolute;
+  z-index:2;
+  bottom:44px;
+  left:28px;
+  right:28px;
+  text-align:center;
+  color:var(--gold);
+  font-size:8px;
+  letter-spacing:5px;
+  text-transform:uppercase;
+}
+@keyframes astSweep{
+  0%,70%{transform:translateX(-120%);}
+  100%{transform:translateX(120%);}
+}
+.about-corner{position:absolute;width:20px;height:20px;border-color:var(--gold);}
+.about-corner.tl{top:-1px;left:-1px;border-top:2px solid;border-left:2px solid;}
+.about-corner.br{bottom:-1px;right:-1px;border-bottom:2px solid;border-right:2px solid;}
+.about-text h3{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,4vw,56px);font-weight:700;color:#fff;text-transform:uppercase;line-height:1;margin-bottom:8px;}
+.about-text h3 span{color:var(--gold);}
+.about-handle{font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:36px;display:block;}
+.about-text p{font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:20px;font-weight:300;}
+.about-vals{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
+.val-item{border-left:2px solid var(--gold);padding-left:18px;}
+.val-title{font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;display:block;}
+.val-text{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* MENTORSHIP */
+#mentorship{background:var(--bg2);}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.plan-card{background:var(--bg2);}
+.plan-card.featured{background:var(--bg3);}
+.plan-top{height:3px;background:var(--border);}
+.plan-top.gold{background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));}
+.plan-inner{padding:40px 36px 36px;}
+.plan-tag{font-size:8px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:20px;display:block;}
+.plan-tag.gold{color:var(--gold);}
+.plan-name{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:10px;}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px;}
+.plan-price sup{font-size:22px;font-family:'Raleway',sans-serif;font-weight:300;vertical-align:top;margin-top:10px;display:inline-block;}
+.plan-price .per{font-size:16px;color:var(--muted);font-family:'Raleway',sans-serif;font-weight:300;}
+.plan-period{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:28px;}
+.plan-divider{height:1px;background:var(--border);margin-bottom:24px;}
+.plan-features{list-style:none;margin-bottom:36px;}
+.plan-features li{font-size:12px;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.plan-features li:last-child{border-bottom:none;}
+.feat-tick{width:16px;height:16px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.feat-tick::after{content:'';width:6px;height:4px;border-left:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(-45deg) translateY(-1px);}
+.plan-btn{width:100%;padding:15px;font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:'Raleway',sans-serif;font-weight:700;transition:all 0.2s;border:1px solid var(--border2);background:transparent;color:var(--muted);}
+.plan-btn:hover{border-color:var(--gold);color:var(--gold);}
+.plan-btn.gold{background:var(--gold);color:#000;border-color:var(--gold);}
+.plan-btn.gold:hover{background:var(--gold-light);}
+
+/* COMMUNITY */
+#community{background:var(--bg3);}
+.community-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.community-block{background:var(--bg3);padding:56px 48px;}
+.community-block.dark{background:var(--bg2);}
+.comm-icon{width:52px;height:52px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:28px;}
+.comm-icon svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.comm-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:14px;}
+.comm-text{font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:28px;}
+.comm-perks{list-style:none;margin-bottom:36px;}
+.comm-perks li{font-size:11px;letter-spacing:1px;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.comm-perks li::before{content:'';width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--bg2);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.testi-card{background:var(--bg2);padding:40px 36px;}
+.quote-mark{font-family:'Cormorant Garamond',serif;font-size:80px;color:var(--border2);line-height:0.8;margin-bottom:16px;font-weight:700;}
+.testi-text{font-size:15px;color:var(--text);line-height:1.8;font-style:italic;font-family:'Cormorant Garamond',serif;margin-bottom:24px;}
+.testi-div{height:1px;background:var(--border2);margin-bottom:18px;}
+.testi-name{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+.testi-sub{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.stars{display:flex;gap:4px;margin-bottom:16px;}
+.star{width:10px;height:10px;background:var(--gold);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+
+/* SIGNUP */
+#signup{background:var(--bg);position:relative;overflow:hidden;}
+.signup-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.06) 0%,transparent 60%);}
+.signup-layout{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1200px;margin:0 auto;}
+.signup-left .section-title{margin-bottom:24px;}
+.signup-blurb{font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:40px;}
+.signup-promises{list-style:none;}
+.signup-promises li{font-size:11px;letter-spacing:1px;color:var(--muted);padding:14px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.signup-promises li::before{content:'';width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+.signup-form{background:var(--bg2);border:1px solid var(--border);padding:48px;position:relative;overflow:hidden;}
+.form-top-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.form-input{background:var(--bg4);border:1px solid var(--border2);padding:13px 16px;color:var(--text);font-size:12px;font-family:'Raleway',sans-serif;font-weight:300;outline:none;transition:border-color 0.2s;width:100%;}
+.form-input:focus{border-color:var(--gold);}
+.form-input::placeholder{color:var(--muted3);}
+select.form-input{appearance:none;cursor:pointer;}
+.submit-btn{width:100%;padding:17px;background:var(--gold);color:#000;font-size:9px;letter-spacing:4px;text-transform:uppercase;font-weight:700;font-family:'Raleway',sans-serif;border:none;cursor:pointer;margin-top:24px;transition:background 0.2s;}
+.submit-btn:hover{background:var(--gold-light);}
+.form-note{font-size:8px;letter-spacing:1px;color:var(--muted3);text-transform:uppercase;margin-top:16px;line-height:1.6;}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40px 36px;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:40px;margin-bottom:48px;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;letter-spacing:8px;color:var(--gold);display:block;margin-bottom:12px;}
+.footer-tagline{font-size:9px;letter-spacing:3px;color:var(--muted3);text-transform:uppercase;}
+.footer-nav{display:flex;gap:48px;flex-wrap:wrap;}
+.footer-col-title{font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:block;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{font-size:11px;letter-spacing:1px;color:var(--muted3);text-transform:uppercase;text-decoration:none;transition:color 0.2s;}
+.footer-col ul a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-disc{font-size:8px;letter-spacing:1px;color:var(--muted3);text-transform:uppercase;line-height:1.8;}
+
+@media(max-width:900px){
+  .results-layout,.about-grid,.community-grid,.signup-layout,.plans-grid,.testi-grid{grid-template-columns:1fr;}
+  .stats-bar-inner{flex-wrap:wrap;}
+  .sb-item{border-right:none;border-bottom:1px solid var(--border);flex:1 1 50%;}
+  section{padding:80px 20px;}
+  #hero{padding:100px 20px 0;}
+  .nav-links{display:none;}
+  .nav-inner{padding:0 20px;}
+  .plan-inner,.community-block,.testi-card,.signup-form{padding:28px 24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">AST</span>
+    <ul class="nav-links">
+      <li><a href="#results">Results</a></li>
+      <li><a href="#start-here">Start Here</a></li>
+      <li><a href="#mentorship">Mentorship</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+    <a href="#signup" class="nav-cta">Join Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <span class="hero-tag">Alistair Signal Trading</span>
+      <h1 class="hero-title">Trade With<br/><span>Precision</span></h1>
+      <p class="hero-sub">Professional signals · Transparent results<br/>Elite mentorship · XAUUSD specialists</p>
+      <div class="hero-btns">
+        <a href="#signup" class="btn-gold">Join The Group</a>
+        <a href="#results" class="btn-outline">View Results</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="sb-item"><span class="sb-num">2</span><span class="sb-lbl">Weeks Live</span></div>
+    <div class="sb-item"><span class="sb-num">XAUUSD</span><span class="sb-lbl">Primary Market</span></div>
+  </div>
+</div>
+
+<!-- START HERE -->
+<section id="start-here">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="about-img-frame">
+          <div class="about-corner tl"></div>
+          <div class="about-corner br"></div>
+          <div class="about-img-placeholder ast-logo-remix" aria-label="AST logo">
+            <div class="ast-mark">AST</div>
+            <div class="ast-ring"></div>
+            <div class="ast-cross ast-cross-one"></div>
+            <div class="ast-cross ast-cross-two"></div>
+            <div class="ast-logo-caption">Alistair Signal Trading</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="gold-bar"></div>
+        <span class="section-tag">Start Here</span>
+        <h3>New To<br/><span>Trading?</span></h3>
+        <span class="about-handle">Beginner-Friendly Access</span>
+        <p>You do not need to be an expert to get started with AST. The group is designed so newer traders can follow along, see real setups, and build confidence over time.</p>
+        <p>Signals are shared clearly, wins and losses are shown transparently, and members can learn at their own pace without pressure.</p>
+        <p>If you are just getting started, this is the best place to begin before moving into anything more advanced.</p>
+        <div class="about-vals">
+          <div class="val-item"><span class="val-title">Clear Signals</span><span class="val-text">Setups are posted in a way that is easier to follow.</span></div>
+          <div class="val-item"><span class="val-title">Transparent Results</span><span class="val-text">Both wins and losses are documented openly.</span></div>
+          <div class="val-item"><span class="val-title">Learn Slowly</span><span class="val-text">You can observe first and improve at your own pace.</span></div>
+          <div class="val-item"><span class="val-title">Free Start</span><span class="val-text">Join the free group first if you are unsure where to begin.</span></div>
+        </div>
+        <div style="margin-top:36px;">
+          <a href="#signup" class="btn-gold">Start With The Free Group</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="section-inner">
+    <div class="results-layout">
+      <div>
+        <span class="section-tag">Track Record</span>
+        <h2 class="section-title">Weekly<br/>Results</h2>
+        <p class="section-sub">Full transparency - every trade documented</p>
+        <div class="week-tabs">
+          <button class="tab-btn active" onclick="sw(0)">Week 1</button>
+          <button class="tab-btn" onclick="sw(1)">Week 2</button>
+        </div>
+        <div class="results-card active" id="w0">
+          <div class="gold-top"></div>
+          <div class="card-head">
+            <div class="head-row"><span class="ast-lbl">AST</span><span class="wk-badge">Week 1</span></div>
+            <div class="card-title">Weekly Summary</div>
+            <div class="card-date">April 21 - April 24, 2026</div>
+          </div>
+          <div class="stats-sec">
+            <div class="net-block">
+              <div class="net-lbl">Net Result</div>
+              <div class="net-num">+705</div>
+              <div class="net-unit">Pips</div>
+            </div>
+            <div class="stat-boxes">
+              <div class="stat-box"><span class="sb-lbl2">Trades</span><span class="sb-val v-w">8</span></div>
+              <div class="stat-box"><span class="sb-lbl2">Wins</span><span class="sb-val v-g">5</span></div>
+              <div class="stat-box"><span class="sb-lbl2">Losses</span><span class="sb-val v-r">3</span></div>
+              <div class="stat-box"><span class="sb-lbl2">Win Rate</span><span class="sb-val v-gold">62.5%</span></div>
+            </div>
+          </div>
+          <div class="breakdown">
+            <div class="bd-lbl">Trades Breakdown</div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP4</span></div><div class="tr-right"><span class="tr-r pos">+2.0R</span><span class="tr-pips pos">+135 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP4</span></div><div class="tr-right"><span class="tr-r pos">+2.5R</span><span class="tr-pips pos">+190 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP1</span></div><div class="tr-right"><span class="tr-r pos">+1.0R</span><span class="tr-pips pos">+50 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot l"></div><span class="tr-name">SL Hit</span></div><div class="tr-right"><span class="tr-r neg">-1R</span><span class="tr-pips neg">-50 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot l"></div><span class="tr-name">SL Hit</span></div><div class="tr-right"><span class="tr-r neg">-1R</span><span class="tr-pips neg">-50 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot l"></div><span class="tr-name">SL Hit</span></div><div class="tr-right"><span class="tr-r neg">-1R</span><span class="tr-pips neg">-50 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP4</span></div><div class="tr-right"><span class="tr-r pos">+3.0R</span><span class="tr-pips pos">+220 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP4</span></div><div class="tr-right"><span class="tr-r pos">+3.5R</span><span class="tr-pips pos">+260 pips</span></div></div>
+          </div>
+          <div class="card-foot"><span class="cf-handle">@xau_Alistair</span><span class="cf-disc">Not Financial Advice</span></div>
+        </div>
+        <div class="results-card" id="w1">
+          <div class="gold-top"></div>
+          <div class="card-head">
+            <div class="head-row"><span class="ast-lbl">AST</span><span class="wk-badge">Week 2</span></div>
+            <div class="card-title">Weekly Summary</div>
+            <div class="card-date">April 27 - May 1, 2026</div>
+          </div>
+          <div class="stats-sec">
+            <div class="net-block">
+              <div class="net-lbl">Net Result</div>
+              <div class="net-num">+560</div>
+              <div class="net-unit">Pips</div>
+            </div>
+            <div class="stat-boxes">
+              <div class="stat-box"><span class="sb-lbl2">Trades</span><span class="sb-val v-w">5</span></div>
+              <div class="stat-box"><span class="sb-lbl2">Wins</span><span class="sb-val v-g">4</span></div>
+              <div class="stat-box"><span class="sb-lbl2">Losses</span><span class="sb-val v-r">1</span></div>
+              <div class="stat-box"><span class="sb-lbl2">Win Rate</span><span class="sb-val v-gold">80%</span></div>
+            </div>
+          </div>
+          <div class="breakdown">
+            <div class="bd-lbl">Trades Breakdown</div>
+            <div class="tr-row"><div class="tr-left"><div class="dot l"></div><span class="tr-name">SL Hit</span></div><div class="tr-right"><span class="tr-r neg">-1R</span><span class="tr-pips neg">-65 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP4</span></div><div class="tr-right"><span class="tr-r pos">+2.5R</span><span class="tr-pips pos">+180 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP2</span></div><div class="tr-right"><span class="tr-r pos">+1.5R</span><span class="tr-pips pos">+100 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP4</span></div><div class="tr-right"><span class="tr-r pos">+3.0R</span><span class="tr-pips pos">+215 pips</span></div></div>
+            <div class="tr-row"><div class="tr-left"><div class="dot w"></div><span class="tr-name">TP3</span></div><div class="tr-right"><span class="tr-r pos">+2.0R</span><span class="tr-pips pos">+130 pips</span></div></div>
+          </div>
+          <div class="card-foot"><span class="cf-handle">@xau_Alistair</span><span class="cf-disc">Not Financial Advice</span></div>
+        </div>
+      </div>
+      <div class="results-right">
+        <div class="cumulative-box">
+          <div class="cum-top"></div>
+          <div class="cum-inner">
+            <span class="cum-tag">Running Totals - All Weeks</span>
+            <div class="cum-grid">
+              <div class="cum-cell"><div class="cum-cell-lbl">Total Pips</div><div class="cum-cell-val">+1,265</div></div>
+              <div class="cum-cell"><div class="cum-cell-lbl">Win Rate</div><div class="cum-cell-val">69%</div></div>
+              <div class="cum-cell"><div class="cum-cell-lbl">Total Trades</div><div class="cum-cell-val white">13</div></div>
+              <div class="cum-cell"><div class="cum-cell-lbl">Total Wins</div><div class="cum-cell-val green">9</div></div>
+            </div>
+            <div class="cum-note">Updated weekly · All trades publicly verified</div>
+          </div>
+        </div>
+        <div class="summary-box" id="sum-box">
+          <span class="sum-tag">Weekly Commentary</span>
+          <div class="sum-week-lbl" id="sum-title">Week 1</div>
+          <p class="sum-text" id="sum-p1"></p>
+          <p class="sum-text" id="sum-p2"></p>
+          <p class="sum-text" id="sum-p3"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENTORSHIP -->
+<section id="mentorship">
+  <div class="section-inner">
+    <span class="section-tag">Mentorship</span>
+    <h2 class="section-title">Elevate Your<br/>Trading</h2>
+    <p class="section-sub">Choose the path that fits your journey</p>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-top"></div>
+        <div class="plan-inner">
+          <span class="plan-tag">Entry</span>
+          <div class="plan-name">Signal Access</div>
+          <div class="plan-price">Free</div>
+          <div class="plan-period">Community tier</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li><div class="feat-tick"></div>Daily XAUUSD signals</li>
+            <li><div class="feat-tick"></div>Weekly summary recaps</li>
+            <li><div class="feat-tick"></div>Community Telegram group</li>
+            <li><div class="feat-tick"></div>Public trade history</li>
+          </ul>
+          <button class="plan-btn" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Join Free</button>
+        </div>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-top gold"></div>
+        <div class="plan-inner">
+          <span class="plan-tag gold">Most Popular</span>
+          <div class="plan-name">Mentorship</div>
+          <div class="plan-price"><sup>£</sup>XX<span class="per">/mo</span></div>
+          <div class="plan-period">Monthly membership</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li><div class="feat-tick"></div>Everything in Free</li>
+            <li><div class="feat-tick"></div>1-on-1 weekly review sessions</li>
+            <li><div class="feat-tick"></div>Live trade walkthroughs</li>
+            <li><div class="feat-tick"></div>Private mentorship channel</li>
+            <li><div class="feat-tick"></div>Full trade reasoning & analysis</li>
+            <li><div class="feat-tick"></div>Direct access to Alistair</li>
+          </ul>
+          <button class="plan-btn gold" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-top"></div>
+        <div class="plan-inner">
+          <span class="plan-tag">Elite</span>
+          <div class="plan-name">Inner Circle</div>
+          <div class="plan-price"><sup>£</sup>XX<span class="per">/mo</span></div>
+          <div class="plan-period">Limited spots</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li><div class="feat-tick"></div>Everything in Mentorship</li>
+            <li><div class="feat-tick"></div>Pre-market daily briefings</li>
+            <li><div class="feat-tick"></div>Exclusive setups before signals</li>
+            <li><div class="feat-tick"></div>Portfolio & risk review</li>
+            <li><div class="feat-tick"></div>Priority response access</li>
+            <li><div class="feat-tick"></div>Bespoke education plan</li>
+          </ul>
+          <button class="plan-btn" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Enquire</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="section-inner">
+    <span class="section-tag">The Group</span>
+    <h2 class="section-title">Join The<br/>Community</h2>
+    <p class="section-sub">A brotherhood of serious traders</p>
+    <div class="community-grid">
+      <div class="community-block dark">
+        <div class="comm-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="comm-title">Telegram Group</div>
+        <div class="comm-text">All signals, trade alerts, and weekly recaps delivered directly in our Telegram group. Instant notifications, zero delay - be first to every setup.</div>
+        <ul class="comm-perks">
+          <li>Real-time signal alerts</li>
+          <li>Pre-market briefings</li>
+          <li>Trade entry & exit updates</li>
+          <li>Community discussion</li>
+          <li>Weekly recap posts</li>
+        </ul>
+        <a href="#signup" class="btn-gold" style="display:inline-block;text-decoration:none;">Join Telegram</a>
+      </div>
+      <div class="community-block">
+        <div class="comm-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="comm-title">The AST Family</div>
+        <div class="comm-text">This isn't just a signal service - it's a collective of traders committed to growth. Share ideas, learn from each other, and build real skills together.</div>
+        <ul class="comm-perks">
+          <li>Supportive, drama-free environment</li>
+          <li>Trader discussion & Q&A</li>
+          <li>Shared learning resources</li>
+          <li>Progress tracking & accountability</li>
+          <li>Long-term community bonds</li>
+        </ul>
+        <a href="#signup" class="btn-outline" style="display:inline-block;padding:15px 40px;text-decoration:none;">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNUP -->
+<section id="signup">
+  <div class="signup-bg"></div>
+  <div class="signup-layout">
+    <div class="signup-left">
+      <span class="section-tag">Get Started</span>
+      <h2 class="section-title">Join AST<br/>Today</h2>
+      <p class="signup-blurb">Fill in your details and we'll be in touch within 24 hours. Whether you're here for the signals, the mentorship, or the community - there's a place for you in AST.</p>
+      <ul class="signup-promises">
+        <li>Response within 24 hours</li>
+        <li>No commitment required to enquire</li>
+        <li>Free tier available immediately</li>
+        <li>Direct Telegram access on joining</li>
+        <li>Full transparency from day one</li>
+      </ul>
+    </div>
+    <div class="signup-form">
+      <div class="form-top-bar"></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Your first name"/></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Your last name"/></div>
+        <div class="form-group full"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com"/></div>
+        <div class="form-group full"><label class="form-label">Telegram Username</label><input type="text" class="form-input" placeholder="@yourusername"/></div>
+        <div class="form-group full"><label class="form-label">I'm interested in</label><select class="form-input"><option value="">Select an option...</option><option>Free Signal Group</option><option>Mentorship Plan</option><option>Inner Circle</option><option>Just exploring</option></select></div>
+        <div class="form-group full"><label class="form-label">Trading Experience</label><select class="form-input"><option value="">Select your level...</option><option>Complete Beginner</option><option>Under 1 Year</option><option>1-3 Years</option><option>3+ Years</option></select></div>
+        <div class="form-group full"><label class="form-label">Message (Optional)</label><textarea class="form-input" rows="3" placeholder="Any questions or anything you'd like Alistair to know..." style="resize:vertical;"></textarea></div>
+      </div>
+      <button class="submit-btn">Submit Application -&gt;</button>
+      <p class="form-note">Not financial advice · All trading carries risk · By signing up you agree to our terms</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <span class="section-tag">Reviews</span>
+    <h2 class="section-title">What Members<br/>Say</h2>
+    <p class="section-sub">Real feedback from the AST community</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <div class="quote-mark">"</div>
+        <div class="testi-text">Only two weeks in and already the transparency blows other groups out of the water. Alistair posts wins and losses - that's rare and that's why I trust this.</div>
+        <div class="testi-div"></div>
+        <div class="testi-name">J. Mitchell</div>
+        <div class="testi-sub">Member since Week 1</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <div class="quote-mark">"</div>
+        <div class="testi-text">The weekly summaries alone are worth it. Proper breakdowns, honest reflections, and setups that actually make sense. Best decision I made this month.</div>
+        <div class="testi-div"></div>
+        <div class="testi-name">K. Osei</div>
+        <div class="testi-sub">Gold Member</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <div class="quote-mark">"</div>
+        <div class="testi-text">Knew nothing about XAUUSD when I joined. The signal reasoning teaches you as you go. I'm finally starting to understand why entries are where they are.</div>
+        <div class="testi-div"></div>
+        <div class="testi-name">S. Davies</div>
+        <div class="testi-sub">Community Member</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <span class="footer-logo">AST</span>
+        <span class="footer-tagline">Alistair Signal Trading · @xau_Alistair</span>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <span class="footer-col-title">Navigate</span>
+          <ul><li><a href="#results">Results</a></li><li><a href="#start-here">Start Here</a></li><li><a href="#mentorship">Mentorship</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Join</span>
+          <ul><li><a href="#community">Community</a></li><li><a href="#testimonials">Reviews</a></li><li><a href="#signup">Sign Up</a></li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-disc">Not financial advice · All trading involves risk · Past performance does not guarantee future results · AST © 2026</span>
+      <span style="font-size:9px;letter-spacing:2px;color:var(--muted3);text-transform:uppercase;">@xau_Alistair</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const summaries=[
+  {title:"Week 1",p1:"This was my first four days sharing signals, so there was naturally a bit of a learning curve throughout the week. A couple of trades hit stop loss before later running to full targets, which highlights some areas I'll be refining moving forward.",p2:"Overall, it's been a solid start, and I hope you've been able to take good value from the setups this week.",p3:"Have a blessed weekend everyone. We will be back Monday."},
+  {title:"Week 2",p1:"Second week of sharing trades. Slower week overall, but the focus remains on quality over quantity. One key area to improve is execution - missed a few key zones due to lack of attention, including a high-potential move. That gets tightened up going forward.",p2:"The week opened with an avoidable loss - the market hadn't formed sufficient structure. A reminder to stay disciplined and stick to the plan. The remaining trades performed strongly, consistently hitting targets and delivering solid returns.",p3:"Appreciate everyone's patience and support. We go again Monday. Have a great weekend."}
+];
+function sw(i){
+  document.querySelectorAll('.results-card').forEach((c,j)=>c.classList.toggle('active',j===i));
+  document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  const s=summaries[i];
+  document.getElementById('sum-title').textContent=s.title;
+  document.getElementById('sum-p1').textContent=s.p1;
+  document.getElementById('sum-p2').textContent=s.p2;
+  document.getElementById('sum-p3').textContent=s.p3;
+}
+sw(0);
+</script>
+</body>
+</html>
