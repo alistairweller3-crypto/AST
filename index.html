@@ -16,6 +16,115 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Raleway',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
 
+/* INTRO SCREEN */
+#intro{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 45%,rgba(201,168,76,0.10) 0%,transparent 38%),
+    radial-gradient(ellipse at 20% 80%,rgba(201,168,76,0.04) 0%,transparent 44%),
+    #0a0a0a;
+  animation:introFadeAway 1.05s ease 3.35s forwards;
+}
+#intro::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:80px 80px;
+  opacity:0.22;
+}
+#intro::after{
+  content:'';
+  position:absolute;
+  width:42vw;
+  max-width:520px;
+  aspect-ratio:1;
+  border:1px solid rgba(201,168,76,0.20);
+  border-radius:50%;
+  box-shadow:0 0 70px rgba(201,168,76,0.10), inset 0 0 45px rgba(201,168,76,0.04);
+  transform:scale(0.88);
+  animation:introRing 2.4s ease forwards;
+}
+.intro-copy{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  opacity:0;
+  transform:translateY(14px) scale(0.96);
+  animation:introTextIn 1.15s ease 0.15s forwards,introTextHold 1.2s ease 2s forwards;
+}
+.intro-kicker{
+  font-size:9px;
+  letter-spacing:6px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+.intro-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(56px,7vw,88px);
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  line-height:0.92;
+  color:#fff;
+  text-shadow:0 0 34px rgba(201,168,76,0.18);
+}
+.intro-text span{
+  color:var(--gold);
+  background:linear-gradient(90deg,#7d6320 0%,#c9a84c 22%,#fff0a8 50%,#c9a84c 78%,#7d6320 100%);
+  background-size:220% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:introShimmer 1.9s ease 1.15s forwards;
+}
+.intro-sub{
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-top:28px;
+  line-height:1.8;
+}
+.intro-line{
+  position:absolute;
+  z-index:1;
+  width:min(620px,72vw);
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.65),transparent);
+  opacity:0;
+  animation:introLine 1.35s ease 0.55s forwards;
+}
+.intro-line.top{transform:translateY(-76px);}
+.intro-line.bottom{transform:translateY(76px);}
+@keyframes introTextIn{
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+@keyframes introShimmer{
+  to{background-position:220% center;}
+}
+@keyframes introTextHold{
+  0%,100%{text-shadow:0 0 32px rgba(201,168,76,0.18);}
+  50%{text-shadow:0 0 52px rgba(201,168,76,0.48);}
+}
+@keyframes introRing{
+  to{transform:scale(1);opacity:0.95;}
+}
+@keyframes introLine{
+  to{opacity:1;}
+}
+@keyframes introFadeAway{
+  to{opacity:0;visibility:hidden;pointer-events:none;}
+}
+
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(10px);}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;}
@@ -174,28 +283,10 @@ section{padding:110px 40px;}
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(72px,10vw,126px);
   font-weight:700;
   letter-spacing:2px;
-  line-height:1;
-  background:linear-gradient(180deg,#fff0a8 0%,#f0d080 32%,#c9a84c 62%,#7d6320 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  text-shadow:0 0 32px rgba(201,168,76,0.18);
-}
-.ast-mark{
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(72px,10vw,126px);
-  font-weight:700;
-  letter-spacing:4px;
   line-height:1;
   background:linear-gradient(180deg,#fff0a8 0%,#f0d080 32%,#c9a84c 62%,#7d6320 100%);
   -webkit-background-clip:text;
@@ -351,10 +442,19 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
 </head>
 <body>
 
+<!-- INTRO SCREEN -->
+<div id="intro" aria-hidden="true">
+  <div class="intro-line top"></div>
+  <div class="intro-copy">
+    <div class="intro-text">Trade With<br/><span>Precision</span></div>
+  </div>
+  <div class="intro-line bottom"></div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <span class="nav-logo">AST</span>
+    <span class="nav-logo">A S T</span>
     <ul class="nav-links">
       <li><a href="#results">Results</a></li>
       <li><a href="#start-here">Start Here</a></li>
@@ -446,7 +546,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
         <div class="results-card active" id="w0">
           <div class="gold-top"></div>
           <div class="card-head">
-            <div class="head-row"><span class="ast-lbl">AST</span><span class="wk-badge">Week 1</span></div>
+            <div class="head-row"><span class="ast-lbl">A S T</span><span class="wk-badge">Week 1</span></div>
             <div class="card-title">Weekly Summary</div>
             <div class="card-date">April 21 - April 24, 2026</div>
           </div>
@@ -479,7 +579,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
         <div class="results-card" id="w1">
           <div class="gold-top"></div>
           <div class="card-head">
-            <div class="head-row"><span class="ast-lbl">AST</span><span class="wk-badge">Week 2</span></div>
+            <div class="head-row"><span class="ast-lbl">A S T</span><span class="wk-badge">Week 2</span></div>
             <div class="card-title">Weekly Summary</div>
             <div class="card-date">April 27 - May 1, 2026</div>
           </div>
@@ -709,7 +809,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <span class="footer-logo">AST</span>
+        <span class="footer-logo">A S T</span>
         <span class="footer-tagline">Alistair Signal Trading · @xau_Alistair</span>
       </div>
       <div class="footer-nav">
