@@ -18,26 +18,24 @@
   --border:#2a2a2a;
   --text:#e8e8e8;
   --muted:#777;
+  --green:#4ade80;
 }
 
 body{
   min-height:100vh;
   background:
-    radial-gradient(circle at 50% 0%, rgba(201,168,76,.12), transparent 35%),
+    radial-gradient(circle at 50% 0%, rgba(201,168,76,.13), transparent 35%),
     linear-gradient(#0a0a0a,#050505);
   color:var(--text);
   font-family:'Raleway',sans-serif;
   padding:50px 20px;
 }
 
-.wrapper{
-  max-width:900px;
-  margin:auto;
-}
+.wrapper{max-width:980px;margin:auto}
 
 .card{
   border:1px solid var(--border);
-  background:rgba(17,17,17,.95);
+  background:rgba(17,17,17,.96);
   padding:48px;
   text-align:center;
   position:relative;
@@ -46,10 +44,7 @@ body{
 .card::before{
   content:"";
   position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:3px;
+  top:0;left:0;right:0;height:3px;
   background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));
 }
 
@@ -73,17 +68,41 @@ h1 span{color:var(--gold)}
 
 .intro{
   color:var(--muted);
-  max-width:650px;
-  margin:0 auto 42px;
+  max-width:690px;
+  margin:0 auto 34px;
   line-height:1.8;
   font-size:14px;
 }
 
-.steps{
+.progress{
+  max-width:620px;
+  margin:0 auto 38px;
   display:grid;
   grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--border);
+}
+
+.progress div{
+  background:#0d0d0d;
+  padding:16px;
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.progress .active{
+  color:#000;
+  background:var(--gold);
+  font-weight:700;
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
   gap:22px;
-  margin-top:35px;
+  margin-top:30px;
 }
 
 .step{
@@ -119,15 +138,6 @@ h1 span{color:var(--gold)}
   margin-bottom:20px;
 }
 
-.instructions{
-  color:#999;
-  font-size:12px;
-  line-height:1.8;
-  margin-top:15px;
-  padding-top:15px;
-  border-top:1px solid #222;
-}
-
 .btn{
   display:inline-block;
   width:100%;
@@ -140,6 +150,8 @@ h1 span{color:var(--gold)}
   letter-spacing:3px;
   text-transform:uppercase;
   font-weight:700;
+  border:none;
+  cursor:pointer;
 }
 
 .btn:hover{background:var(--gold-light)}
@@ -155,12 +167,67 @@ h1 span{color:var(--gold)}
   color:#000;
 }
 
+.checklist{
+  margin-top:24px;
+  border-top:1px solid #222;
+  padding-top:18px;
+}
+
+.check{
+  display:flex;
+  gap:12px;
+  color:#aaa;
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:14px;
+}
+
+.check span{
+  color:var(--gold);
+  font-weight:700;
+}
+
+.confirm-box{
+  margin-top:22px;
+  padding:18px;
+  border:1px solid rgba(201,168,76,.25);
+  background:rgba(201,168,76,.05);
+}
+
+.confirm-box label{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  color:#ccc;
+  font-size:12px;
+  line-height:1.6;
+  cursor:pointer;
+}
+
+.confirm-box input{
+  margin-top:4px;
+  accent-color:var(--gold);
+}
+
+.locked{
+  opacity:.45;
+  pointer-events:none;
+}
+
+.unlocked-note{
+  display:none;
+  margin-top:16px;
+  color:var(--green);
+  font-size:12px;
+  line-height:1.6;
+}
+
 .risk{
   margin-top:36px;
   color:#666;
   font-size:11px;
   line-height:1.7;
-  max-width:720px;
+  max-width:760px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -168,6 +235,7 @@ h1 span{color:var(--gold)}
 @media(max-width:800px){
   .card{padding:34px 22px}
   .steps{grid-template-columns:1fr}
+  .progress{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -182,68 +250,90 @@ h1 span{color:var(--gold)}
     <h1>Application<br><span>Received</span></h1>
 
     <p class="intro">
-      You’re almost in. Complete the steps below to finish your AST setup.
-      Keep this page open while completing your broker registration.
+      You’re almost in. Complete the broker setup first so your account can be connected correctly.
+      Keep this page open while completing Step 1.
     </p>
+
+    <div class="progress">
+      <div class="active">Step 1 · Broker Setup</div>
+      <div>Step 2 · Telegram Access</div>
+    </div>
 
     <div class="steps">
 
-      <!-- STEP 1 -->
       <div class="step">
         <div class="step-number">1</div>
         <h2>Set Up Broker</h2>
 
         <p>
-          Create your broker account using the AST partner link below so your account is connected correctly.
+          Use the AST partner link below so your account is connected correctly before joining the Telegram group.
         </p>
 
         <a class="btn" href="https://puvip.co/la-partners/mFSMQ8Zw" target="_blank" rel="noopener noreferrer">
           Create Broker Account
         </a>
 
-        <div class="instructions">
-          When creating your account, ensure you select:
-          <br><br>
-          • Platform: <strong>MT5</strong><br>
-          • Account Type: <strong>Standard</strong><br>
-          • Currency: Your preferred base currency<br><br>
-
-          Once your account is created, download the <strong>PU Prime app</strong> and log in using your account details.<br><br>
-
-          After logging in, navigate to the <strong>Promotions</strong> section and activate the <strong>100% bonus</strong> currently available.<br><br>
-
-          Finally, download <strong>MetaTrader 5 (MT5)</strong> and log in using the credentials sent to your email after registration.
+        <div class="checklist">
+          <div class="check"><span>✓</span><div>Select <strong>MT5</strong> as your platform.</div></div>
+          <div class="check"><span>✓</span><div>Select <strong>Standard</strong> as your account type.</div></div>
+          <div class="check"><span>✓</span><div>Choose your preferred base currency.</div></div>
+          <div class="check"><span>✓</span><div>Download the <strong>PU Prime app</strong> and log in.</div></div>
+          <div class="check"><span>✓</span><div>Go to <strong>Promotions</strong> and activate the current <strong>100% bonus</strong>.</div></div>
+          <div class="check"><span>✓</span><div>Download <strong>MetaTrader 5</strong> and log in using the credentials sent to your email.</div></div>
         </div>
 
+        <div class="confirm-box">
+          <label>
+            <input type="checkbox" id="setupDone">
+            <span>I have completed my PU Prime and MT5 setup using the AST partner link.</span>
+          </label>
+        </div>
       </div>
 
-      <!-- STEP 2 -->
-      <div class="step">
+      <div class="step" id="telegramStep">
         <div class="step-number">2</div>
         <h2>Join Telegram</h2>
 
         <p>
-          Once your broker setup is complete, return here and request access to the AST Telegram group.
+          Once your broker setup is complete, request access to the AST Telegram group.
         </p>
 
-        <a class="btn btn-outline" href="https://t.me/+B7wBScK5iho0MzQ8" target="_blank" rel="noopener noreferrer">
-          Join Telegram
+        <a id="telegramBtn" class="btn btn-outline locked" href="https://t.me/+B7wBScK5iho0MzQ8" target="_blank" rel="noopener noreferrer">
+          Complete Step 1 First
         </a>
 
-        <div class="instructions">
-          Your request will be reviewed and approved shortly after verification.
-        </div>
-
+        <p class="unlocked-note" id="unlockedNote">
+          Step 2 unlocked. Your request will be reviewed and approved shortly after verification.
+        </p>
       </div>
 
     </div>
 
     <p class="risk">
-      Trading involves risk. Results are not guaranteed. AST may receive commission or rebate if you register through our partner link. This is not financial advice.
+      Trading involves risk. Results are not guaranteed. AST may receive commission or rebate if you register through our partner link.
+      This is not financial advice.
     </p>
 
   </div>
 </div>
+
+<script>
+const checkbox = document.getElementById("setupDone");
+const telegramBtn = document.getElementById("telegramBtn");
+const unlockedNote = document.getElementById("unlockedNote");
+
+checkbox.addEventListener("change", function(){
+  if(this.checked){
+    telegramBtn.classList.remove("locked");
+    telegramBtn.textContent = "Join Telegram";
+    unlockedNote.style.display = "block";
+  } else {
+    telegramBtn.classList.add("locked");
+    telegramBtn.textContent = "Complete Step 1 First";
+    unlockedNote.style.display = "none";
+  }
+});
+</script>
 
 </body>
 </html>
