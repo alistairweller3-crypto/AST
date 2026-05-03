@@ -19,15 +19,14 @@
   --border:#1e1e1e;
   --border2:#2a2a2a;
 
-  --text:#e8e8e8;
+  --text:#f2f2f2;
 
-  /* Updated readable grey colours */
-  --muted:#bfbfbf;
-  --muted2:#9f9f9f;
-  --muted3:#7f7f7f;
+  --muted:#d1d1d1;
+  --muted2:#b8b8b8;
+  --muted3:#9a9a9a;
 }
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Raleway',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Raleway',sans-serif;font-weight:400;line-height:1.7;overflow-x:hidden;}
 
 /* INTRO SCREEN */
 #intro{
@@ -136,7 +135,6 @@ body{background:var(--bg);color:var(--text);font-family:'Raleway',sans-serif;fon
 @keyframes introFadeAway{
   to{opacity:0;visibility:hidden;pointer-events:none;}
 }
-
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(10px);}
@@ -543,7 +541,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
   </div>
 </section>
 
-
 <!-- RESULTS -->
 <section id="results">
   <div class="section-inner">
@@ -556,6 +553,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
           <button class="tab-btn active" onclick="sw(0)">Week 1</button>
           <button class="tab-btn" onclick="sw(1)">Week 2</button>
         </div>
+
         <div class="results-card active" id="w0">
           <div class="gold-top"></div>
           <div class="card-head">
@@ -589,6 +587,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
           </div>
           <div class="card-foot"><span class="cf-handle">@xau_Alistair</span><span class="cf-disc">Not Financial Advice</span></div>
         </div>
+
         <div class="results-card" id="w1">
           <div class="gold-top"></div>
           <div class="card-head">
@@ -620,6 +619,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
           <div class="card-foot"><span class="cf-handle">@xau_Alistair</span><span class="cf-disc">Not Financial Advice</span></div>
         </div>
       </div>
+
       <div class="results-right">
         <div class="cumulative-box">
           <div class="cum-top"></div>
