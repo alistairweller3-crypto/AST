@@ -39,6 +39,24 @@ section{padding:110px 40px}.section-inner{max-width:1200px;margin:0 auto}.gold-b
 #testimonials{background:var(--bg2)}.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}.testi-card{background:var(--bg2);padding:40px 36px}.quote-mark{font-family:'Cormorant Garamond',serif;font-size:80px;color:var(--border2);line-height:.8}.testi-text{font-size:15px;color:var(--text);line-height:1.8;font-style:italic;font-family:'Cormorant Garamond',serif;margin-bottom:24px}.testi-div{height:1px;background:var(--border2);margin-bottom:18px}.testi-name{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}.testi-sub{font-size:9px;color:var(--muted2);text-transform:uppercase}.stars{display:flex;gap:4px;margin-bottom:16px}.star{width:10px;height:10px;background:var(--gold);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}.testimonial-note{text-align:center;margin-top:30px;font-size:10px;color:var(--muted2)}
 footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40px 36px}.footer-inner{max-width:1200px;margin:0 auto}.footer-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:48px}.footer-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;letter-spacing:6px;color:var(--gold);display:block}.footer-tagline{font-size:9px;letter-spacing:3px;color:var(--muted3);text-transform:uppercase}.footer-nav{display:flex;gap:48px}.footer-col-title{font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:block}.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}.footer-col ul a{font-size:11px;color:var(--muted3);text-transform:uppercase;text-decoration:none}.footer-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.footer-disc{font-size:8px;letter-spacing:1px;color:var(--muted3);text-transform:uppercase;line-height:1.8;max-width:900px}
 @media(max-width:900px){.results-layout,.about-grid,.community-grid,.signup-layout,.plans-grid,.testi-grid{grid-template-columns:1fr}.stats-bar-inner{flex-wrap:wrap}.sb-item{border-right:none;border-bottom:1px solid var(--border);flex:1 1 50%}section{padding:80px 20px}#hero{padding:100px 20px 0}.nav-links{display:none}.nav-inner{padding:0 20px}.plan-inner,.community-block,.testi-card,.signup-form{padding:28px 24px}}
+.footer-col ul a{
+  position:relative;
+}
+
+.footer-col ul a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:-2px;
+  width:0%;
+  height:1px;
+  background:var(--gold);
+  transition:0.3s;
+}
+
+.footer-col ul a:hover::after{
+  width:100%;
+}
 </style>
 </head>
 <body>
@@ -68,42 +86,20 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
 
 <section id="testimonials"><div class="section-inner"><span class="section-tag">Reviews</span><h2 class="section-title">What Members<br/>Say</h2><p class="section-sub">Feedback from the AST community</p><div class="testi-grid"><div class="testi-card"><div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><div class="quote-mark">"</div><div class="testi-text">Only two weeks in and already the transparency blows other groups out of the water. Alistair posts wins and losses - that's rare and that's why I trust this.</div><div class="testi-div"></div><div class="testi-name">J. Mitchell</div><div class="testi-sub">Member since Week 1</div></div><div class="testi-card"><div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><div class="quote-mark">"</div><div class="testi-text">The weekly summaries alone are worth it. Proper breakdowns, honest reflections, and setups that actually make sense. Best decision I made this month.</div><div class="testi-div"></div><div class="testi-name">K. Osei</div><div class="testi-sub">Gold Member</div></div><div class="testi-card"><div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><div class="quote-mark">"</div><div class="testi-text">Knew nothing about XAUUSD when I joined. The signal reasoning teaches you as you go. I'm finally starting to understand why entries are where they are.</div><div class="testi-div"></div><div class="testi-name">S. Davies</div><div class="testi-sub">Community Member</div></div></div><p class="testimonial-note">Testimonials reflect individual experiences and do not guarantee similar results.</p></div></section>
 
-<div class="footer-nav">
+<div class="footer-col">
+  <span class="footer-col-title">Connect</span>
 
-  <div class="footer-col">
-    <span class="footer-col-title">Navigate</span>
-    <ul>
-      <li><a href="#results">Results</a></li>
-      <li><a href="#start-here">Start Here</a></li>
-      <li><a href="#mentorship">Mentorship</a></li>
-    </ul>
+  <div style="font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:14px;">
+    Follow live updates & trade breakdowns
   </div>
 
-  <div class="footer-col">
-    <span class="footer-col-title">Join</span>
-    <ul>
-      <li><a href="#community">Community</a></li>
-      <li><a href="#testimonials">Reviews</a></li>
-      <li><a href="#signup">Sign Up</a></li>
-    </ul>
-  </div>
-
-  <div class="footer-col">
-    <span class="footer-col-title">Connect</span>
-
-    <div style="font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:14px;">
-      Follow live updates & trade breakdowns
-    </div>
-
-    <ul>
-      <li><a href="https://t.me/YOUR_LINK" target="_blank">Telegram</a></li>
-      <li><a href="mailto:your@email.com">Email</a></li>
-      <li><a href="https://kick.com/YOURNAME" target="_blank">Kick (Live)</a></li>
-      <li><a href="#">Instagram</a></li>
-      <li><a href="#">X / Twitter</a></li>
-    </ul>
-  </div>
-
+  <ul>
+    <li><a href="https://t.me/YOUR_LINK" target="_blank">Telegram</a></li>
+    <li><a href="mailto:your@email.com">Email</a></li>
+    <li><a href="https://kick.com/YOURNAME" target="_blank">Kick (Live)</a></li>
+    <li><a href="#">Instagram</a></li>
+    <li><a href="#">X / Twitter</a></li>
+  </ul>
 </div>
 
 <script>
