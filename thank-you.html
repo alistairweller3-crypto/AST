@@ -16,8 +16,10 @@
   --bg:#0a0a0a;
   --card:#111;
   --border:#2a2a2a;
-  --text:#e8e8e8;
-  --muted:#777;
+  --text:#f2f2f2;
+  --muted:#d1d1d1;
+  --muted2:#b8b8b8;
+  --muted3:#9a9a9a;
   --green:#4ade80;
 }
 
@@ -28,6 +30,7 @@ body{
     linear-gradient(#0a0a0a,#050505);
   color:var(--text);
   font-family:'Raleway',sans-serif;
+  font-weight:400;
   padding:50px 20px;
 }
 
@@ -89,7 +92,7 @@ h1 span{color:var(--gold)}
   font-size:10px;
   letter-spacing:3px;
   text-transform:uppercase;
-  color:var(--muted);
+  color:var(--muted2);
 }
 
 .progress .active{
@@ -176,7 +179,7 @@ h1 span{color:var(--gold)}
 .check{
   display:flex;
   gap:12px;
-  color:#aaa;
+  color:var(--muted);
   font-size:12px;
   line-height:1.6;
   margin-bottom:14px;
@@ -198,7 +201,7 @@ h1 span{color:var(--gold)}
   display:flex;
   align-items:flex-start;
   gap:12px;
-  color:#ccc;
+  color:var(--muted);
   font-size:12px;
   line-height:1.6;
   cursor:pointer;
@@ -224,7 +227,7 @@ h1 span{color:var(--gold)}
 
 .risk{
   margin-top:36px;
-  color:#666;
+  color:var(--muted3);
   font-size:11px;
   line-height:1.7;
   max-width:760px;
