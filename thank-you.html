@@ -41,7 +41,6 @@ body{
   padding:48px;
   text-align:center;
   position:relative;
-  overflow:hidden;
 }
 
 .card::before{
@@ -92,7 +91,6 @@ h1 span{color:var(--gold)}
   background:#0d0d0d;
   padding:34px 28px;
   text-align:left;
-  position:relative;
 }
 
 .step-number{
@@ -118,14 +116,16 @@ h1 span{color:var(--gold)}
   color:var(--muted);
   font-size:13px;
   line-height:1.8;
-  margin-bottom:24px;
+  margin-bottom:20px;
 }
 
-.notice{
-  color:var(--gold);
+.instructions{
+  color:#999;
   font-size:12px;
-  line-height:1.7;
-  margin-bottom:24px;
+  line-height:1.8;
+  margin-top:15px;
+  padding-top:15px;
+  border-top:1px solid #222;
 }
 
 .btn{
@@ -165,18 +165,6 @@ h1 span{color:var(--gold)}
   margin-right:auto;
 }
 
-.back{
-  display:block;
-  margin-top:26px;
-  color:#777;
-  text-decoration:none;
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-}
-
-.back:hover{color:var(--gold)}
-
 @media(max-width:800px){
   .card{padding:34px 22px}
   .steps{grid-template-columns:1fr}
@@ -194,12 +182,13 @@ h1 span{color:var(--gold)}
     <h1>Application<br><span>Received</span></h1>
 
     <p class="intro">
-      You’re almost in. Complete the two steps below to finish your AST setup.
-      Keep this page open so you can return after setting up your broker account.
+      You’re almost in. Complete the steps below to finish your AST setup.
+      Keep this page open while completing your broker registration.
     </p>
 
     <div class="steps">
 
+      <!-- STEP 1 -->
       <div class="step">
         <div class="step-number">1</div>
         <h2>Set Up Broker</h2>
@@ -208,40 +197,50 @@ h1 span{color:var(--gold)}
           Create your broker account using the AST partner link below so your account is connected correctly.
         </p>
 
-        <div class="notice">
-          This opens in a new tab. After completing setup, return to this page for Step 2.
-        </div>
-
         <a class="btn" href="https://puvip.co/la-partners/mFSMQ8Zw" target="_blank" rel="noopener noreferrer">
           Create Broker Account
         </a>
+
+        <div class="instructions">
+          When creating your account, ensure you select:
+          <br><br>
+          • Platform: <strong>MT5</strong><br>
+          • Account Type: <strong>Standard</strong><br>
+          • Currency: Your preferred base currency<br><br>
+
+          Once your account is created, download the <strong>PU Prime app</strong> and log in using your account details.<br><br>
+
+          After logging in, navigate to the <strong>Promotions</strong> section and activate the <strong>100% bonus</strong> currently available.<br><br>
+
+          Finally, download <strong>MetaTrader 5 (MT5)</strong> and log in using the credentials sent to your email after registration.
+        </div>
+
       </div>
 
+      <!-- STEP 2 -->
       <div class="step">
         <div class="step-number">2</div>
         <h2>Join Telegram</h2>
 
         <p>
-          Once your broker account is created, come back here and join the AST Telegram group.
+          Once your broker setup is complete, return here and request access to the AST Telegram group.
         </p>
-
-        <div class="notice">
-          Only join after completing the broker setup so your access can be checked properly.
-        </div>
 
         <a class="btn btn-outline" href="https://t.me/+B7wBScK5iho0MzQ8" target="_blank" rel="noopener noreferrer">
           Join Telegram
         </a>
+
+        <div class="instructions">
+          Your request will be reviewed and approved shortly after verification.
+        </div>
+
       </div>
 
     </div>
 
     <p class="risk">
-      Trading involves risk. Results are not guaranteed. AST may receive commission or rebate if you register through our partner link.
-      This is not financial advice.
+      Trading involves risk. Results are not guaranteed. AST may receive commission or rebate if you register through our partner link. This is not financial advice.
     </p>
-
-    <a class="back" href="index.html">Back to AST website</a>
 
   </div>
 </div>
