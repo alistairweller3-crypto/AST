@@ -739,13 +739,21 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
 <!-- SIGNUP -->
 <section id="signup">
   <div class="signup-bg"></div>
+
   <div class="signup-layout">
 
+    <!-- LEFT SIDE -->
     <div class="signup-left">
       <span class="section-tag">Get Started</span>
-      <h2 class="section-title">Join AST<br/>Today</h2>
+
+      <h2 class="section-title">
+        Join AST<br/>Today
+      </h2>
+
       <p class="signup-blurb">
-        Fill in your details and we'll be in touch within 24 hours. Whether you're here for the signals, the mentorship, or the community - there's a place for you in AST.
+        Fill in your details and we'll be in touch within 24 hours. 
+        Whether you're here for the signals, the mentorship, or the 
+        community - there's a place for you in AST.
       </p>
 
       <ul class="signup-promises">
@@ -757,11 +765,15 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
       </ul>
     </div>
 
-    <!-- ✅ FORM STARTS HERE -->
-    <form class="signup-form" action="https://formspree.io/f/mojrjdew" method="POST">
+    <!-- FORM -->
+    <form class="signup-form" action="https://api.web3forms.com/submit" method="POST">
 
-      <input type="hidden" name="_next" value="https://alistairweller3-crypto.github.io/AST/thank-you.html">
-      
+      <!-- ACCESS KEY -->
+      <input type="hidden" name="access_key" value="f9223d89-a64f-4e43-b33b-1a789444c94e">
+
+      <!-- REDIRECT AFTER SUBMIT -->
+      <input type="hidden" name="redirect" value="https://alistairweller3.github.io/AST-website/thank-you.html">
+
       <div class="form-top-bar"></div>
 
       <div class="form-grid">
@@ -824,7 +836,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 40p
       </p>
 
     </form>
-    <!-- ✅ FORM ENDS HERE -->
 
   </div>
 </section>
