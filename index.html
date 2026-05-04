@@ -1111,6 +1111,23 @@
       .trade-btn { width: 100%; }
       .footer-nav { flex-direction: column; gap: 28px; }
     }
+
+    /* === TRADE RESULT AUTO COLOURS === */
+.trade-result.trade-win {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.18);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.trade-result.trade-loss {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.18);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
   </style>
 </head>
 
@@ -2075,45 +2092,63 @@
   </footer>
 
   <!-- JAVASCRIPT -->
-  <script>
-    const summaries = [
-      {
-        title: "Week 1",
-        p1: "This was my first four days sharing educational trade ideas, so there was naturally a learning curve throughout the week. A couple of trades hit stop loss before later running to full targets, which highlights areas to refine moving forward.",
-        p2: "Overall, it has been a solid start, and I hope members have been able to take good value from the setups and commentary this week.",
-        p3: "Have a blessed weekend everyone. We will be back Monday."
-      },
-      {
-        title: "Week 2",
-        p1: "Second week of sharing trades. Slower week overall, but the focus remains on quality over quantity. One key area to improve is execution - missed a few key zones due to lack of attention, including a high-potential move. That gets tightened up going forward.",
-        p2: "The week opened with an avoidable loss - the market had not formed sufficient structure. A reminder to stay disciplined and stick to the plan. The remaining trades performed strongly, but outcomes are never guaranteed.",
-        p3: "Appreciate everyone's patience and support. We go again Monday. Have a great weekend."
-      }
-    ];
+ <script>
+const summaries = [
+  {
+    title: "Week 1",
+    p1: "This was my first four days sharing educational trade ideas, so there was naturally a learning curve throughout the week. A couple of trades hit stop loss before later running to full targets, which highlights areas to refine moving forward.",
+    p2: "Overall, it has been a solid start, and I hope members have been able to take good value from the setups and commentary this week.",
+    p3: "Have a blessed weekend everyone. We will be back Monday."
+  },
+  {
+    title: "Week 2",
+    p1: "Second week of sharing trades. Slower week overall, but the focus remains on quality over quantity. One key area to improve is execution - missed a few key zones due to lack of attention, including a high-potential move. That gets tightened up going forward.",
+    p2: "The week opened with an avoidable loss - the market had not formed sufficient structure. A reminder to stay disciplined and stick to the plan. The remaining trades performed strongly, but outcomes are never guaranteed.",
+    p3: "Appreciate everyone's patience and support. We go again Monday. Have a great weekend."
+  }
+];
 
-    function sw(i) {
-      document.querySelectorAll('.results-card').forEach((card, index) => {
-        card.classList.toggle('active', index === i);
-      });
+function sw(i) {
+  document.querySelectorAll('.results-card').forEach((card, index) => {
+    card.classList.toggle('active', index === i);
+  });
 
-      document.querySelectorAll('.tab-btn').forEach((button, index) => {
-        button.classList.toggle('active', index === i);
-      });
+  document.querySelectorAll('.tab-btn').forEach((button, index) => {
+    button.classList.toggle('active', index === i);
+  });
 
-      const summary = summaries[i];
-      document.getElementById('sum-title').textContent = summary.title;
-      document.getElementById('sum-p1').textContent = summary.p1;
-      document.getElementById('sum-p2').textContent = summary.p2;
-      document.getElementById('sum-p3').textContent = summary.p3;
+  const summary = summaries[i];
+  document.getElementById('sum-title').textContent = summary.title;
+  document.getElementById('sum-p1').textContent = summary.p1;
+  document.getElementById('sum-p2').textContent = summary.p2;
+  document.getElementById('sum-p3').textContent = summary.p3;
+}
+
+function toggleTrade(button) {
+  const tradeBody = button.parentElement.nextElementSibling;
+  tradeBody.classList.toggle('open');
+  button.textContent = tradeBody.classList.contains('open')
+    ? 'Hide Breakdown'
+    : 'View Breakdown';
+}
+
+// ✅ AUTO COLOUR TP / SL
+function colourTradeResults() {
+  document.querySelectorAll(".trade-result").forEach((item) => {
+    const text = item.textContent.toLowerCase();
+
+    if (text.includes("tp")) {
+      item.classList.add("trade-win");
     }
 
-    function toggleTrade(button) {
-      const tradeBody = button.parentElement.nextElementSibling;
-      tradeBody.classList.toggle('open');
-      button.textContent = tradeBody.classList.contains('open') ? 'Hide Breakdown' : 'View Breakdown';
+    if (text.includes("sl")) {
+      item.classList.add("trade-loss");
     }
+  });
+}
 
-    sw(0);
-  </script>
+colourTradeResults();
+sw(0);
+</script>
 </body>
 </html>
