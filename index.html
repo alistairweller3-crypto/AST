@@ -1260,6 +1260,70 @@
   display: none;
 }
 
+    .price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0 18px;
+}
+
+.price-option {
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.025);
+  padding: 16px;
+}
+
+.price-option.highlight {
+  border-color: rgba(201,168,76,.45);
+  background: rgba(201,168,76,.07);
+  box-shadow: 0 0 18px rgba(201,168,76,.08);
+}
+
+.price-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.old-price {
+  color: var(--muted3);
+  text-decoration: line-through;
+  font-size: 13px;
+}
+
+.new-price {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--gold);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.new-price .per {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  color: var(--muted2);
+  margin-left: 3px;
+}
+
+.price-save {
+  margin-top: 8px;
+  color: var(--muted2);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.price-option.highlight .price-save {
+  color: var(--gold);
+}
+
+.plan-card.featured {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201,168,76,.10), transparent 38%),
+    var(--bg3);
+}
   </style>
 </head>
 
