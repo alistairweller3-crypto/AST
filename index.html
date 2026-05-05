@@ -1212,48 +1212,54 @@
   margin: 12px 0 22px;
 }
 
-.countdown {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  max-width: 520px;
-  margin: 0 auto 18px;
+    /* === EARLY OFFER PREMIUM EFFECTS === */
+
+.early-offer {
+  grid-column: 1 / -1;
+  max-width: 700px;
+  margin: 40px auto;
+  border: 1px solid rgba(201,168,76,.38);
+  background: rgba(201,168,76,.055);
+  box-shadow: 0 0 30px rgba(201,168,76,.10);
+  animation: offerPulse 3.5s ease-in-out infinite;
 }
 
-.countdown div {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  padding: 16px 10px;
+@keyframes offerPulse {
+  0%, 100% {
+    box-shadow: 0 0 22px rgba(201,168,76,.08);
+  }
+
+  50% {
+    box-shadow: 0 0 38px rgba(201,168,76,.18);
+  }
 }
 
-.countdown span {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-}
-
-.countdown small {
-  display: block;
-  margin-top: 8px;
-  font-size: 8px;
+.spots-left {
+  display: inline-block;
+  margin: 4px auto 18px;
+  padding: 9px 16px;
+  border: 1px solid rgba(201,168,76,.35);
+  background: rgba(10,10,10,.45);
+  color: var(--muted);
+  font-size: 10px;
   letter-spacing: 2px;
-  color: var(--muted2);
   text-transform: uppercase;
 }
 
-.early-offer p {
-  color: var(--muted);
-  font-size: 12px;
+.spots-left span {
+  color: var(--gold);
+  font-weight: 700;
 }
 
-@media(max-width:600px) {
-  .countdown {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.early-offer.expired {
+  animation: none;
+  opacity: .85;
 }
+
+.early-offer.expired .spots-left {
+  display: none;
+}
+
   </style>
 </head>
 
@@ -2168,9 +2174,10 @@
         <div class="plan-card"><div class="plan-top"></div><div class="plan-inner"><span class="plan-tag">Entry</span><div class="plan-name">Signal Access</div><div class="plan-price">Free</div><div class="plan-period">Community tier</div><div class="plan-divider"></div><ul class="plan-features"><li><div class="feat-tick"></div>XAUUSD trade ideas</li><li><div class="feat-tick"></div>Weekly summary recaps</li><li><div class="feat-tick"></div>Community Telegram group</li><li><div class="feat-tick"></div>Public trade history</li></ul><button class="plan-btn" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Join Free</button></div></div>
         <div class="plan-card featured"><div class="plan-top gold"></div><div class="plan-inner"><span class="plan-tag gold">Most Popular</span><div class="plan-name">Mentorship</div><div class="plan-price"><sup>£</sup>coming soon<span class="per">/mo</span></div><div class="plan-period">Monthly membership</div><div class="plan-divider"></div><ul class="plan-features"><li><div class="feat-tick"></div>Everything in Free</li><li><div class="feat-tick"></div>1-on-1 weekly review sessions</li><li><div class="feat-tick"></div>Educational trade walkthroughs</li><li><div class="feat-tick"></div>Private mentorship channel</li><li><div class="feat-tick"></div>Market reasoning & analysis</li><li><div class="feat-tick"></div>Direct access to Alistair</li></ul><button class="plan-btn gold" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Apply Now</button></div></div>
         <div class="plan-card"><div class="plan-top"></div><div class="plan-inner"><span class="plan-tag">Advanced</span><div class="plan-name">Inner Circle</div><div class="plan-price"><sup>£</sup>coming soon<span class="per">/mo</span></div><div class="plan-period">Limited spots</div><div class="plan-divider"></div><ul class="plan-features"><li><div class="feat-tick"></div>Everything in Mentorship</li><li><div class="feat-tick"></div>Pre-market educational briefings</li><li><div class="feat-tick"></div>Additional market breakdowns</li><li><div class="feat-tick"></div>Risk education support</li><li><div class="feat-tick"></div>Priority response access</li><li><div class="feat-tick"></div>Bespoke education plan</li></ul><button class="plan-btn" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Enquire</button></div></div>
-        <div class="early-offer">
+       <div class="early-offer" id="earlyOffer">
   <span class="early-tag">Early Access Offer</span>
-  <h3>Discounted Mentorship Price Ends In</h3>
+
+  <h3 id="offerTitle">Discounted Mentorship Price Ends In</h3>
 
   <div class="countdown">
     <div><span id="days">00</span><small>Days</small></div>
@@ -2179,7 +2186,13 @@
     <div><span id="seconds">00</span><small>Seconds</small></div>
   </div>
 
-  <p>Apply before the timer ends to be considered for early release pricing.</p>
+  <div class="spots-left">
+    Only <span id="spotsNumber">7</span> early access spots left
+  </div>
+
+  <p id="offerText">
+    Apply before the timer ends to be considered for early release pricing.
+  </p>
 </div>
       </div>
     </div>
@@ -2313,17 +2326,26 @@ function toggleTrade(button) {
    function startCountdown() {
   const offerEndDate = new Date("2026-06-01T23:59:59").getTime();
 
+  const earlyOffer = document.getElementById("earlyOffer");
+  const offerTitle = document.getElementById("offerTitle");
+  const offerText = document.getElementById("offerText");
+
   const timer = setInterval(() => {
     const now = new Date().getTime();
     const distance = offerEndDate - now;
 
     if (distance <= 0) {
       clearInterval(timer);
-      document.querySelector(".early-offer h3").textContent = "Early Access Offer Has Ended";
+
+      earlyOffer.classList.add("expired");
+      offerTitle.textContent = "Early Access Offer Has Ended";
+      offerText.textContent = "Standard mentorship pricing now applies. You can still apply to be considered.";
+
       document.getElementById("days").textContent = "00";
       document.getElementById("hours").textContent = "00";
       document.getElementById("minutes").textContent = "00";
       document.getElementById("seconds").textContent = "00";
+
       return;
     }
 
@@ -2335,6 +2357,7 @@ function toggleTrade(button) {
 }
 
 startCountdown();
+   
 // ✅ AUTO COLOUR TP / SL
 function colourTradeResults() {
   document.querySelectorAll(".trade-result").forEach((item) => {
