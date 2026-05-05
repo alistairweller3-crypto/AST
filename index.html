@@ -1137,6 +1137,58 @@
   font-size: 14px;
   line-height: 1.9;
 }
+    .mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 8px 14px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: 'Raleway', sans-serif;
+}
+
+@media (max-width: 900px) {
+  .nav-inner {
+    height: 64px;
+    position: relative;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 20px;
+    right: 20px;
+    background: rgba(10, 10, 10, 0.98);
+    border: 1px solid var(--border2);
+    padding: 18px;
+    z-index: 999;
+  }
+
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 12px 0;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-cta {
+    padding: 8px 14px;
+    letter-spacing: 2px;
+  }
+}
   </style>
 </head>
 
@@ -1151,19 +1203,25 @@
   </div>
 
   <!-- NAVIGATION -->
-  <nav>
-    <div class="nav-inner">
-      <span class="nav-logo">AST</span>
-      <ul class="nav-links">
-        <li><a href="#results">Results</a></li>
-        <li><a href="#start-here">Start Here</a></li>
-        <li><a href="#mentorship">Mentorship</a></li>
-        <li><a href="#community">Community</a></li>
-        <li><a href="#testimonials">Reviews</a></li>
-      </ul>
-      <a href="#signup" class="nav-cta">Join Now</a>
-    </div>
-  </nav>
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">AST</span>
+
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      Menu
+    </button>
+
+    <ul class="nav-links" id="mobileNav">
+      <li><a href="#results">Results</a></li>
+      <li><a href="#start-here">Start Here</a></li>
+      <li><a href="#mentorship">Mentorship</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+
+    <a href="#signup" class="nav-cta">Join Now</a>
+  </div>
+</nav>
 
   <!-- HERO -->
   <section id="hero">
@@ -2169,6 +2227,9 @@ function toggleTrade(button) {
   button.textContent = tradeBody.classList.contains('open')
     ? 'Hide Breakdown'
     : 'View Breakdown';
+}
+   function toggleMobileMenu() {
+  document.getElementById("mobileNav").classList.toggle("open");
 }
 
 // ✅ AUTO COLOUR TP / SL
