@@ -1324,6 +1324,69 @@
     radial-gradient(circle at 50% 0%, rgba(201,168,76,.10), transparent 38%),
     var(--bg3);
 }
+
+    /* === PREMIUM COUNTDOWN TIMER === */
+
+.early-offer {
+  max-width: 780px;
+  margin: 50px auto;
+  padding: 42px 36px;
+  text-align: center;
+}
+
+.early-offer h3 {
+  max-width: 620px;
+  margin: 20px auto 28px;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.05;
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 560px;
+  margin: 0 auto 22px;
+}
+
+.countdown div {
+  background: #0a0a0a;
+  border: 1px solid rgba(201,168,76,.25);
+  padding: 18px 10px;
+}
+
+.countdown span {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.countdown small {
+  display: block;
+  margin-top: 8px;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--muted2);
+  text-transform: uppercase;
+}
+
+.spots-left {
+  margin-top: 8px;
+  margin-bottom: 22px;
+}
+
+@media(max-width:600px) {
+  .early-offer {
+    padding: 34px 20px;
+  }
+
+  .countdown {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
   </style>
 </head>
 
@@ -2380,12 +2443,27 @@
 
   <h3 id="offerTitle">Discounted Mentorship Price Ends In</h3>
 
-  <div class="countdown">
-    <div><span id="days">00</span><small>Days</small></div>
-    <div><span id="hours">00</span><small>Hours</small></div>
-    <div><span id="minutes">00</span><small>Minutes</small></div>
-    <div><span id="seconds">00</span><small>Seconds</small></div>
+<div class="countdown">
+  <div>
+    <span id="days">00</span>
+    <small>Days</small>
   </div>
+
+  <div>
+    <span id="hours">00</span>
+    <small>Hours</small>
+  </div>
+
+  <div>
+    <span id="minutes">00</span>
+    <small>Minutes</small>
+  </div>
+
+  <div>
+    <span id="seconds">00</span>
+    <small>Seconds</small>
+  </div>
+</div>
 
   <div class="spots-left">
     Only <span id="spotsNumber">3</span> early access spots left
