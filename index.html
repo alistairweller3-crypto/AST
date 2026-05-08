@@ -1477,6 +1477,57 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+  
+/* === PREMIUM TESTIMONIAL DISCLAIMER FIX === */
+#testimonials .testi-grid {
+  margin-bottom: 0;
+}
+
+.testimonial-disclaimer-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 46px auto 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.testimonial-note {
+  display: block !important;
+  width: min(760px, 100%) !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+  padding: 22px 34px !important;
+
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201,168,76,.08), transparent 45%),
+    rgba(201,168,76,.035) !important;
+  border: 1px solid rgba(201,168,76,.35) !important;
+  box-shadow: 0 0 26px rgba(201,168,76,.06) !important;
+
+  color: var(--muted2) !important;
+  font-size: 10px !important;
+  letter-spacing: 3px !important;
+  line-height: 1.9 !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+}
+
+@media (max-width: 700px) {
+  .testimonial-disclaimer-wrap {
+    margin-top: 32px !important;
+  }
+
+  .testimonial-note {
+    width: 100% !important;
+    padding: 18px 18px !important;
+    font-size: 8px !important;
+    letter-spacing: 2px !important;
+  }
+}
+
   </style>
 </head>
 
@@ -2901,11 +2952,14 @@
   <div class="testi-name">Taylor Woodall</div>
   <div class="testi-sub">AST Community Member</div>
 </div>
-  <div class="testimonial-disclaimer-wrap">
-  <p class="testimonial-note">
-    Testimonials reflect individual experiences and do not guarantee similar results.
-  </p>
-</div>
+      </div>
+
+      <div class="testimonial-disclaimer-wrap">
+        <p class="testimonial-note">
+          Testimonials reflect individual experiences and do not guarantee similar results.
+        </p>
+      </div>
+    </div>
   </section>
 
   <!-- FOOTER -->
