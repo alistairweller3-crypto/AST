@@ -1073,7 +1073,19 @@
     .testi-sub { color: var(--muted2); font-size: 9px; text-transform: uppercase; }
     .stars { display: flex; gap: 4px; margin-bottom: 16px; }
     .star { width: 10px; height: 10px; background: var(--gold); clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
-    .testimonial-note { margin-top: 30px; color: var(--muted2); font-size: 10px; text-align: center; }
+    .testimonial-note {
+  max-width: 680px;
+  margin: 38px auto 0;
+  padding: 14px 22px;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  line-height: 1.7;
+  color: var(--muted3);
+  text-transform: uppercase;
+  border: 1px solid rgba(201,168,76,.18);
+  background: rgba(201,168,76,.035);
+}
 
     footer { padding: 52px 40px 36px; background: var(--bg2); border-top: 1px solid var(--border); }
     .footer-inner { max-width: 1200px; margin: 0 auto; }
@@ -2589,7 +2601,9 @@
   <div class="testi-name">Taylor Woodall</div>
   <div class="testi-sub">AST Community Member</div>
 </div>
-      <p class="testimonial-note">Testimonials reflect individual experiences and do not guarantee similar results.</p>
+     <p class="testimonial-note">
+  Testimonials reflect individual experiences and do not guarantee similar results.
+</p>
     </div>
   </section>
 
