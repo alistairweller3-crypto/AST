@@ -1548,6 +1548,140 @@
   }
 }
 
+  
+/* =========================================================
+   REFERRAL PROGRAMME
+========================================================= */
+#referral {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201,168,76,.055), transparent 58%),
+    var(--bg2);
+}
+
+.referral-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.referral-intro {
+  max-width: 760px;
+  margin: 0 auto 42px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.referral-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 44px 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.referral-tier {
+  position: relative;
+  padding: 40px 28px;
+  background: var(--bg3);
+  overflow: hidden;
+}
+
+.referral-tier.featured {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201,168,76,.12), transparent 45%),
+    var(--bg3);
+}
+
+.referral-medal {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 30px;
+}
+
+.referral-count {
+  margin-bottom: 10px;
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.referral-reward {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+.referral-how {
+  margin-top: 50px;
+  padding: 38px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.referral-how-title {
+  margin-bottom: 22px;
+  color: var(--gold);
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.referral-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.referral-step {
+  padding: 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.referral-step span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.referral-small-print {
+  max-width: 760px;
+  margin: 34px auto 28px;
+  padding: 18px 24px;
+  border: 1px solid rgba(201,168,76,.22);
+  background: rgba(201,168,76,.035);
+  color: var(--muted3);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .referral-tiers,
+  .referral-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .referral-how {
+    padding: 28px 20px;
+  }
+}
+
   </style>
 </head>
 
@@ -1575,6 +1709,7 @@
       <li><a href="#start-here">Start Here</a></li>
       <li><a href="#mentorship">Mentorship</a></li>
       <li><a href="#community">Community</a></li>
+      <li><a href="#referral">Referral</a></li>
       <li><a href="#testimonials">Reviews</a></li>
     </ul>
 
@@ -3360,6 +3495,58 @@
     </div>
   </section>
 
+
+  <!-- REFERRAL PROGRAMME -->
+  <section id="referral">
+    <div class="section-inner">
+      <div class="referral-wrap">
+        <span class="section-tag">Referral Programme</span>
+        <h2 class="section-title">Grow With AST<br /><span>Get Rewarded</span></h2>
+
+        <p class="referral-intro">
+          If AST has added value to your trading journey we'd love for you to share it. Refer people to join AST and we'll take care of you.
+        </p>
+
+        <div class="referral-tiers">
+          <div class="referral-tier">
+            <span class="referral-medal">🥉</span>
+            <div class="referral-count">Refer 2 People</div>
+            <div class="referral-reward">1 Month Free Mentorship<br />Worth £297</div>
+          </div>
+
+          <div class="referral-tier featured">
+            <span class="referral-medal">🥈</span>
+            <div class="referral-count">Refer 5 People</div>
+            <div class="referral-reward">3 Months Free Mentorship<br />Worth £747</div>
+          </div>
+
+          <div class="referral-tier">
+            <span class="referral-medal">🥇</span>
+            <div class="referral-count">Refer 10 People</div>
+            <div class="referral-reward">6 Months Free Mentorship<br />Worth £1,479</div>
+          </div>
+        </div>
+
+        <div class="referral-how">
+          <div class="referral-how-title">How It Works</div>
+
+          <div class="referral-steps">
+            <div class="referral-step"><span>Step 1</span>Share ast.trading with someone you think would benefit.</div>
+            <div class="referral-step"><span>Step 2</span>Ask them to mention your name when they sign up.</div>
+            <div class="referral-step"><span>Step 3</span>Once verified, your reward is added automatically.</div>
+            <div class="referral-step"><span>Step 4</span>Free or paid signup counts — just bring them in.</div>
+          </div>
+        </div>
+
+        <p class="referral-small-print">
+          Rewards are verified and issued by AST Trades Ltd. Free or paid signup counts toward your referral total. Rewards are issued at our discretion and subject to our terms and conditions.
+        </p>
+
+        <a href="#signup" class="btn-gold">Join AST Free — Start Referring</a>
+      </div>
+    </div>
+  </section>
+
   <!-- SIGNUP -->
   <section id="signup">
     <div class="signup-bg"></div>
@@ -3476,15 +3663,15 @@
         <div><span class="footer-logo">AST</span><span class="footer-tagline">Operated by AST Trades Ltd · @xau_Alistair</span></div>
         <div class="footer-nav">
           <div class="footer-col"><span class="footer-col-title">Contact</span><ul><li><a href="mailto:astworks.co@gmail.com">Email</a></li><li><a href="https://t.me/xau_Alistair" target="_blank" rel="noopener noreferrer">Telegram DM</a></li></ul></div>
-          <div class="footer-col"><span class="footer-col-title">Socials</span><div style="font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:14px;">Follow live updates &amp; trade breakdowns</div><ul><li><a href="https://kick.com/xauAlistair" target="_blank" rel="noopener noreferrer">Kick Live</a></li><li><a href="https://www.instagram.com/ast.tradez?igsh=MTFubXVibWMzbmQyeg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.tiktok.com/@ast.trades?_r=1&_t=ZN-967I5r4Lzao" target="_blank" rel="noopener noreferrer">TikTok</a></li></ul></div>
+          <div class="footer-col"><span class="footer-col-title">Socials</span><div style="font-size:9px;letter-spacing:2px;color:var(--muted2);text-transform:uppercase;margin-bottom:14px;">Follow live updates &amp; trade breakdowns</div><ul><li><a href="https://kick.com/xauAlistair" target="_blank" rel="noopener noreferrer">Kick Live</a></li><li><a href="https://www.instagram.com/ast.tradez?igsh=MTFubXVibWMzbmQyeg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.tiktok.com/@ast.trades?_r=1&_t=ZN-967I5r4Lzao" target="_blank" rel="noopener noreferrer">TikTok</a></li><li><a href="#referral">Referral Programme</a></li></ul></div>
         </div>
       </div>
       <div class="footer-bottom"><span class="footer-disc">AST Trades Ltd provides educational trading content and community-based market commentary only. AST Trades Ltd is not authorised or regulated by the Financial Conduct Authority and does not provide investment advice, financial advice, portfolio management, or trade execution services. Trading involves risk and you may lose some or all of your capital. Past performance is not indicative of future results. AST Trades Ltd may receive commission or rebate if you register through our partner links.</span><span style="font-size:9px;letter-spacing:2px;color:var(--muted3);text-transform:uppercase;">© 2026 AST Trades Ltd · @xau_Alistair</span></div>
     </div>
   
 <div style="margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;font-size:11px;letter-spacing:1px;text-transform:uppercase;">
-<a href="/privacy" style="color:var(--muted3);text-decoration:none;">Privacy Policy</a>
-<a href="/terms" style="color:var(--muted3);text-decoration:none;">Terms & Conditions</a>
+<a href="privacy.html" style="color:var(--muted3);text-decoration:none;">Privacy Policy</a>
+<a href="terms.html" style="color:var(--muted3);text-decoration:none;">Terms & Conditions</a>
 </div>
 
 </footer>
