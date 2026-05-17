@@ -1682,6 +1682,51 @@
   }
 }
 
+  
+/* === PREMIUM WEEK SELECTOR === */
+.week-select-wrap {
+  width: min(430px, 100%);
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.week-select-wrap label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.week-select-wrap select {
+  width: 100%;
+  padding: 15px 18px;
+  background:
+    linear-gradient(180deg, rgba(201,168,76,.06), rgba(255,255,255,.015)),
+    var(--bg4);
+  border: 1px solid rgba(201,168,76,.35);
+  color: var(--gold);
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(201,168,76,.05);
+}
+
+.week-select-wrap select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 24px rgba(201,168,76,.14);
+}
+
+.week-select-wrap select option {
+  background: #111;
+  color: var(--text);
+}
+
   </style>
 </head>
 
@@ -1805,11 +1850,14 @@
           <h2 class="section-title">Weekly<br />Results</h2>
           <p class="section-sub">Full transparency - every trade documented</p>
           <p class="results-risk">These results are based on historical trade examples shared within the AST community. They are not guaranteed and do not represent typical outcomes. Individual results will vary. Trading involves risk and losses can exceed gains. Most retail traders lose money trading leveraged products. AST Trades Ltd provides educational content only and does not provide financial advice.</p>
-          <div class="week-tabs">
-            <button class="tab-btn active" onclick="sw(0)">Week 1</button>
-            <button class="tab-btn" onclick="sw(1)">Week 2</button>
-            <button class="tab-btn" onclick="sw(2)">Week 3</button>
-            <button class="tab-btn" onclick="sw(3)">Week 4</button>
+          <div class="week-select-wrap">
+            <label for="weekSelect">Select Weekly Report</label>
+            <select id="weekSelect" onchange="sw(this.value)">
+              <option value="0">Week 1 · Apr 21 - Apr 24</option>
+              <option value="1">Week 2 · Apr 27 - May 1</option>
+              <option value="2">Week 3 · May 4 - May 8</option>
+              <option value="3">Week 4 · May 11 - May 15</option>
+            </select>
           </div>
 
           <!-- WEEK 1 RESULTS -->
@@ -3706,20 +3754,29 @@ const summaries = [
 ];
 
 function sw(i) {
-  document.querySelectorAll('.results-card').forEach((card, index) => {
-    card.classList.toggle('active', index === i);
-  });
+      i = Number(i);
 
-  document.querySelectorAll('.tab-btn').forEach((button, index) => {
-    button.classList.toggle('active', index === i);
-  });
+      document.querySelectorAll('.results-card').forEach((card, index) => {
+        card.classList.toggle('active', index === i);
+      });
 
-  const summary = summaries[i];
-  document.getElementById('sum-title').textContent = summary.title;
-  document.getElementById('sum-p1').textContent = summary.p1;
-  document.getElementById('sum-p2').textContent = summary.p2;
-  document.getElementById('sum-p3').textContent = summary.p3;
-}
+      document.querySelectorAll('.tab-btn').forEach((button, index) => {
+        button.classList.toggle('active', index === i);
+      });
+
+      const weekSelect = document.getElementById('weekSelect');
+      if (weekSelect && Number(weekSelect.value) !== i) {
+        weekSelect.value = i;
+      }
+
+      const summary = summaries[i];
+      if (!summary) return;
+
+      document.getElementById('sum-title').textContent = summary.title;
+      document.getElementById('sum-p1').textContent = summary.p1;
+      document.getElementById('sum-p2').textContent = summary.p2;
+      document.getElementById('sum-p3').textContent = summary.p3;
+    }
 
 function toggleTrade(button) {
   const tradeBody = button.parentElement.nextElementSibling;
